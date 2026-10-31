@@ -53,7 +53,7 @@ export default function OpeningScreen() {
       <button 
         onClick={handleSkip} 
         className="btn btn-ghost" 
-        style={{ position: 'absolute', top: -20, right: 0, zIndex: 10 }}
+        style={{ position: 'absolute', top: -20, left: 0, zIndex: 10 }}
       >
         跳过开场
       </button>

@@ -2,9 +2,16 @@ import { useProfileStore } from '@/store/profileStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { endingsById } from '@/content/endings';
 
-export default function ArchivesScreen() {
+// 增加一个接收关闭档案的回调
+export default function ArchivesScreen({ onClose }: { onClose?: () => void }) {
   const { archives, profile, deleteArchive } = useProfileStore();
-  const setStep = useSessionStore((s) => s.startGame); // 借用重开的方法退出去
+  // 获取重置游戏的方法
+  const resetGame = useSessionStore((s) => s.resetGame); 
+
+  const handleRestart = () => {
+    resetGame();
+    if (onClose) onClose();
+  };
 
   return (
     <div style={{ paddingTop: 40, paddingBottom: 60 }}>
@@ -16,7 +23,9 @@ export default function ArchivesScreen() {
       {archives.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-dim)' }}>
           <p>还没有保存的档案。</p>
-          <button className="btn btn-ghost" onClick={setStep} style={{ marginTop: 16 }}>去推演一条平行人生</button>
+          <button className="btn btn-ghost" onClick={handleRestart} style={{ marginTop: 16 }}>
+            去推演一条平行人生
+          </button>
         </div>
       ) : (
         <div style={{ display: 'grid', gap: 16 }}>
@@ -39,7 +48,9 @@ export default function ArchivesScreen() {
       )}
 
       <div style={{ marginTop: 40 }}>
-        <button className="btn" onClick={setStep} style={{ width: '100%' }}>返回首页</button>
+        <button className="btn btn-primary" onClick={handleRestart} style={{ width: '100%' }}>
+          重新开始推演
+        </button>
       </div>
     </div>
   );

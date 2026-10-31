@@ -15,17 +15,21 @@ export default function App() {
   return (
     <div className="app-shell">
       <nav className="top-nav">
+        {/* 如果在档案页，就不显示“重新开始”，因为档案页底部有了 */}
         {!showArchives && step !== 'opening' && step !== 'ending' && (
           <button className="btn btn-ghost" onClick={resetGame}>重新开始</button>
         )}
-        <button className="btn btn-ghost" onClick={() => setShowArchives(!showArchives)}>
-          {showArchives ? '返回' : '我的档案'}
-        </button>
+        {/* 如果不在档案页，显示切换按钮 */}
+        {!showArchives && (
+          <button className="btn btn-ghost" onClick={() => setShowArchives(true)}>
+            我的档案
+          </button>
+        )}
       </nav>
 
       <div className="page">
         {showArchives ? (
-          <ArchivesScreen />
+          <ArchivesScreen onClose={() => setShowArchives(false)} />
         ) : (
           <div key={step} style={{ animation: 'fadeUp 0.6s var(--ease)' }}>
             {step === 'opening' && <OpeningScreen />}
