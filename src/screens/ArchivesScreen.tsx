@@ -2,20 +2,28 @@ import { useProfileStore } from '@/store/profileStore';
 import { useSessionStore } from '@/store/sessionStore';
 import { endingsById } from '@/content/endings';
 
-// 增加一个接收关闭档案的回调
-export default function ArchivesScreen({ onClose }: { onClose?: () => void }) {
+export default function ArchivesScreen({ onClose }: { onClose: () => void }) {
   const { archives, profile, deleteArchive } = useProfileStore();
-  // 获取重置游戏的方法
   const resetGame = useSessionStore((s) => s.resetGame); 
 
   const handleRestart = () => {
-    resetGame();
-    if (onClose) onClose();
+    resetGame(); // 清空游戏状态
+    onClose();   // 关闭档案页
   };
 
   return (
-    <div style={{ paddingTop: 40, paddingBottom: 60 }}>
-      <h1 className="serif" style={{ fontSize: 28, marginBottom: 8 }}>我的档案</h1>
+    <div style={{ paddingTop: 40, paddingBottom: 60, position: 'relative' }}>
+      
+      {/* 新增左上角返回按钮 */}
+      <button 
+        className="btn btn-ghost" 
+        onClick={onClose} 
+        style={{ position: 'absolute', top: 0, left: 0, paddingLeft: 0 }}
+      >
+        ← 返回
+      </button>
+
+      <h1 className="serif" style={{ fontSize: 28, marginBottom: 8, marginTop: 24 }}>我的档案</h1>
       <p className="mono faint" style={{ marginBottom: 32 }}>
         {profile ? `当前身份：${profile.nickname}` : '本地匿名身份'}
       </p>
